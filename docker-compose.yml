@@ -1,0 +1,43 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: memoryleaf-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  mongodb:
+    image: mongo:6
+    container_name: memoryleaf-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+
+  backend:
+    build:
+      context: ./backend
+    container_name: memoryleaf-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      MONGODB_URL: ${MONGODB_URL}
+    depends_on:
+      - postgres
+      - mongodb
+#    volumes:
+#      - ./backend:/app
+#      - /app/node_modules
+
+volumes:
+  pgdata:
+  mongodata:
