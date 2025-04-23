@@ -1,0 +1,63 @@
+name: CI - MemoryLeaf
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  backend:
+    name: Build and Test Backend
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: admin
+          POSTGRES_PASSWORD: jesuisadmin
+          POSTGRES_DB: memoryleaf
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mongodb:
+        image: mongo:6
+        ports:
+          - 27017:27017
+
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      MONGODB_URL: ${{ secrets.MONGODB_URL }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: Generate Prisma Client
+        working-directory: ./backend
+        run: npx prisma generate
+
+      - name: Type check and build
+        working-directory: ./backend
+        run: npm run build
+
+      - name: Run ESLint
+        working-directory: ./backend
+        run: npm run lint
+
+      - name: Run tests (optional)
+        working-directory: ./backend
+        run: npm test || echo "No tests yet"

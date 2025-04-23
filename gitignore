@@ -1,0 +1,20 @@
+# Node
+node_modules
+dist
+
+# Env files
+.env
+.env.*
+
+# Logs
+*.log
+
+# Prisma
+prisma/dev.db
+prisma/migrations/
+
+# System files
+.DS_Store
+
+# Docker
+**/docker-entrypoint.sh
