@@ -1,14 +1,14 @@
-name: CI - MemoryLeaf (main)
+name: CI - MemoryLeaf (dev)
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
-    branches: [main]
+    branches: [dev]
 
 jobs:
   backend:
-    name: Build and Test Backend
+    name: Build and Test Backend (Dev)
     runs-on: ubuntu-latest
 
     services:
