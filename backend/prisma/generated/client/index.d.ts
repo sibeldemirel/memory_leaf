@@ -18,6 +18,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Deck
+ * 
+ */
+export type Deck = $Result.DefaultSelection<Prisma.$DeckPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -153,6 +158,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.deck`: Exposes CRUD operations for the **Deck** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Decks
+    * const decks = await prisma.deck.findMany()
+    * ```
+    */
+  get deck(): Prisma.DeckDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -593,7 +608,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    User: 'User'
+    User: 'User',
+    Deck: 'Deck'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -612,7 +628,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user"
+      modelProps: "user" | "deck"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -687,6 +703,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Deck: {
+        payload: Prisma.$DeckPayload<ExtArgs>
+        fields: Prisma.DeckFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DeckFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DeckFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>
+          }
+          findFirst: {
+            args: Prisma.DeckFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DeckFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>
+          }
+          findMany: {
+            args: Prisma.DeckFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>[]
+          }
+          create: {
+            args: Prisma.DeckCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>
+          }
+          createMany: {
+            args: Prisma.DeckCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DeckCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>[]
+          }
+          delete: {
+            args: Prisma.DeckDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>
+          }
+          update: {
+            args: Prisma.DeckUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>
+          }
+          deleteMany: {
+            args: Prisma.DeckDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DeckUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DeckUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>[]
+          }
+          upsert: {
+            args: Prisma.DeckUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DeckPayload>
+          }
+          aggregate: {
+            args: Prisma.DeckAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDeck>
+          }
+          groupBy: {
+            args: Prisma.DeckGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DeckGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DeckCountArgs<ExtArgs>
+            result: $Utils.Optional<DeckCountAggregateOutputType> | number
           }
         }
       }
@@ -775,6 +865,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     user?: UserOmit
+    deck?: DeckOmit
   }
 
   /* Types for Logging */
@@ -1878,6 +1969,1001 @@ export namespace Prisma {
 
 
   /**
+   * Model Deck
+   */
+
+  export type AggregateDeck = {
+    _count: DeckCountAggregateOutputType | null
+    _min: DeckMinAggregateOutputType | null
+    _max: DeckMaxAggregateOutputType | null
+  }
+
+  export type DeckMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    pathname: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeckMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    pathname: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DeckCountAggregateOutputType = {
+    id: number
+    name: number
+    pathname: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DeckMinAggregateInputType = {
+    id?: true
+    name?: true
+    pathname?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeckMaxAggregateInputType = {
+    id?: true
+    name?: true
+    pathname?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DeckCountAggregateInputType = {
+    id?: true
+    name?: true
+    pathname?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DeckAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Deck to aggregate.
+     */
+    where?: DeckWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Decks to fetch.
+     */
+    orderBy?: DeckOrderByWithRelationInput | DeckOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DeckWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Decks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Decks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Decks
+    **/
+    _count?: true | DeckCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DeckMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DeckMaxAggregateInputType
+  }
+
+  export type GetDeckAggregateType<T extends DeckAggregateArgs> = {
+        [P in keyof T & keyof AggregateDeck]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDeck[P]>
+      : GetScalarType<T[P], AggregateDeck[P]>
+  }
+
+
+
+
+  export type DeckGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DeckWhereInput
+    orderBy?: DeckOrderByWithAggregationInput | DeckOrderByWithAggregationInput[]
+    by: DeckScalarFieldEnum[] | DeckScalarFieldEnum
+    having?: DeckScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DeckCountAggregateInputType | true
+    _min?: DeckMinAggregateInputType
+    _max?: DeckMaxAggregateInputType
+  }
+
+  export type DeckGroupByOutputType = {
+    id: string
+    name: string
+    pathname: string
+    createdAt: Date
+    updatedAt: Date
+    _count: DeckCountAggregateOutputType | null
+    _min: DeckMinAggregateOutputType | null
+    _max: DeckMaxAggregateOutputType | null
+  }
+
+  type GetDeckGroupByPayload<T extends DeckGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DeckGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DeckGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DeckGroupByOutputType[P]>
+            : GetScalarType<T[P], DeckGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DeckSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    pathname?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["deck"]>
+
+  export type DeckSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    pathname?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["deck"]>
+
+  export type DeckSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    pathname?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["deck"]>
+
+  export type DeckSelectScalar = {
+    id?: boolean
+    name?: boolean
+    pathname?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DeckOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "pathname" | "createdAt" | "updatedAt", ExtArgs["result"]["deck"]>
+
+  export type $DeckPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Deck"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      pathname: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["deck"]>
+    composites: {}
+  }
+
+  type DeckGetPayload<S extends boolean | null | undefined | DeckDefaultArgs> = $Result.GetResult<Prisma.$DeckPayload, S>
+
+  type DeckCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DeckFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DeckCountAggregateInputType | true
+    }
+
+  export interface DeckDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Deck'], meta: { name: 'Deck' } }
+    /**
+     * Find zero or one Deck that matches the filter.
+     * @param {DeckFindUniqueArgs} args - Arguments to find a Deck
+     * @example
+     * // Get one Deck
+     * const deck = await prisma.deck.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DeckFindUniqueArgs>(args: SelectSubset<T, DeckFindUniqueArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Deck that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DeckFindUniqueOrThrowArgs} args - Arguments to find a Deck
+     * @example
+     * // Get one Deck
+     * const deck = await prisma.deck.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DeckFindUniqueOrThrowArgs>(args: SelectSubset<T, DeckFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deck that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckFindFirstArgs} args - Arguments to find a Deck
+     * @example
+     * // Get one Deck
+     * const deck = await prisma.deck.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DeckFindFirstArgs>(args?: SelectSubset<T, DeckFindFirstArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Deck that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckFindFirstOrThrowArgs} args - Arguments to find a Deck
+     * @example
+     * // Get one Deck
+     * const deck = await prisma.deck.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DeckFindFirstOrThrowArgs>(args?: SelectSubset<T, DeckFindFirstOrThrowArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Decks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Decks
+     * const decks = await prisma.deck.findMany()
+     * 
+     * // Get first 10 Decks
+     * const decks = await prisma.deck.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const deckWithIdOnly = await prisma.deck.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DeckFindManyArgs>(args?: SelectSubset<T, DeckFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Deck.
+     * @param {DeckCreateArgs} args - Arguments to create a Deck.
+     * @example
+     * // Create one Deck
+     * const Deck = await prisma.deck.create({
+     *   data: {
+     *     // ... data to create a Deck
+     *   }
+     * })
+     * 
+     */
+    create<T extends DeckCreateArgs>(args: SelectSubset<T, DeckCreateArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Decks.
+     * @param {DeckCreateManyArgs} args - Arguments to create many Decks.
+     * @example
+     * // Create many Decks
+     * const deck = await prisma.deck.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DeckCreateManyArgs>(args?: SelectSubset<T, DeckCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Decks and returns the data saved in the database.
+     * @param {DeckCreateManyAndReturnArgs} args - Arguments to create many Decks.
+     * @example
+     * // Create many Decks
+     * const deck = await prisma.deck.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Decks and only return the `id`
+     * const deckWithIdOnly = await prisma.deck.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DeckCreateManyAndReturnArgs>(args?: SelectSubset<T, DeckCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Deck.
+     * @param {DeckDeleteArgs} args - Arguments to delete one Deck.
+     * @example
+     * // Delete one Deck
+     * const Deck = await prisma.deck.delete({
+     *   where: {
+     *     // ... filter to delete one Deck
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DeckDeleteArgs>(args: SelectSubset<T, DeckDeleteArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Deck.
+     * @param {DeckUpdateArgs} args - Arguments to update one Deck.
+     * @example
+     * // Update one Deck
+     * const deck = await prisma.deck.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DeckUpdateArgs>(args: SelectSubset<T, DeckUpdateArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Decks.
+     * @param {DeckDeleteManyArgs} args - Arguments to filter Decks to delete.
+     * @example
+     * // Delete a few Decks
+     * const { count } = await prisma.deck.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DeckDeleteManyArgs>(args?: SelectSubset<T, DeckDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Decks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Decks
+     * const deck = await prisma.deck.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DeckUpdateManyArgs>(args: SelectSubset<T, DeckUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Decks and returns the data updated in the database.
+     * @param {DeckUpdateManyAndReturnArgs} args - Arguments to update many Decks.
+     * @example
+     * // Update many Decks
+     * const deck = await prisma.deck.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Decks and only return the `id`
+     * const deckWithIdOnly = await prisma.deck.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DeckUpdateManyAndReturnArgs>(args: SelectSubset<T, DeckUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Deck.
+     * @param {DeckUpsertArgs} args - Arguments to update or create a Deck.
+     * @example
+     * // Update or create a Deck
+     * const deck = await prisma.deck.upsert({
+     *   create: {
+     *     // ... data to create a Deck
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Deck we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DeckUpsertArgs>(args: SelectSubset<T, DeckUpsertArgs<ExtArgs>>): Prisma__DeckClient<$Result.GetResult<Prisma.$DeckPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Decks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckCountArgs} args - Arguments to filter Decks to count.
+     * @example
+     * // Count the number of Decks
+     * const count = await prisma.deck.count({
+     *   where: {
+     *     // ... the filter for the Decks we want to count
+     *   }
+     * })
+    **/
+    count<T extends DeckCountArgs>(
+      args?: Subset<T, DeckCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DeckCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Deck.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DeckAggregateArgs>(args: Subset<T, DeckAggregateArgs>): Prisma.PrismaPromise<GetDeckAggregateType<T>>
+
+    /**
+     * Group by Deck.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DeckGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DeckGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DeckGroupByArgs['orderBy'] }
+        : { orderBy?: DeckGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DeckGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDeckGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Deck model
+   */
+  readonly fields: DeckFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Deck.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DeckClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Deck model
+   */
+  interface DeckFieldRefs {
+    readonly id: FieldRef<"Deck", 'String'>
+    readonly name: FieldRef<"Deck", 'String'>
+    readonly pathname: FieldRef<"Deck", 'String'>
+    readonly createdAt: FieldRef<"Deck", 'DateTime'>
+    readonly updatedAt: FieldRef<"Deck", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Deck findUnique
+   */
+  export type DeckFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * Filter, which Deck to fetch.
+     */
+    where: DeckWhereUniqueInput
+  }
+
+  /**
+   * Deck findUniqueOrThrow
+   */
+  export type DeckFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * Filter, which Deck to fetch.
+     */
+    where: DeckWhereUniqueInput
+  }
+
+  /**
+   * Deck findFirst
+   */
+  export type DeckFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * Filter, which Deck to fetch.
+     */
+    where?: DeckWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Decks to fetch.
+     */
+    orderBy?: DeckOrderByWithRelationInput | DeckOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Decks.
+     */
+    cursor?: DeckWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Decks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Decks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Decks.
+     */
+    distinct?: DeckScalarFieldEnum | DeckScalarFieldEnum[]
+  }
+
+  /**
+   * Deck findFirstOrThrow
+   */
+  export type DeckFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * Filter, which Deck to fetch.
+     */
+    where?: DeckWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Decks to fetch.
+     */
+    orderBy?: DeckOrderByWithRelationInput | DeckOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Decks.
+     */
+    cursor?: DeckWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Decks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Decks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Decks.
+     */
+    distinct?: DeckScalarFieldEnum | DeckScalarFieldEnum[]
+  }
+
+  /**
+   * Deck findMany
+   */
+  export type DeckFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * Filter, which Decks to fetch.
+     */
+    where?: DeckWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Decks to fetch.
+     */
+    orderBy?: DeckOrderByWithRelationInput | DeckOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Decks.
+     */
+    cursor?: DeckWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Decks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Decks.
+     */
+    skip?: number
+    distinct?: DeckScalarFieldEnum | DeckScalarFieldEnum[]
+  }
+
+  /**
+   * Deck create
+   */
+  export type DeckCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Deck.
+     */
+    data: XOR<DeckCreateInput, DeckUncheckedCreateInput>
+  }
+
+  /**
+   * Deck createMany
+   */
+  export type DeckCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Decks.
+     */
+    data: DeckCreateManyInput | DeckCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Deck createManyAndReturn
+   */
+  export type DeckCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * The data used to create many Decks.
+     */
+    data: DeckCreateManyInput | DeckCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Deck update
+   */
+  export type DeckUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Deck.
+     */
+    data: XOR<DeckUpdateInput, DeckUncheckedUpdateInput>
+    /**
+     * Choose, which Deck to update.
+     */
+    where: DeckWhereUniqueInput
+  }
+
+  /**
+   * Deck updateMany
+   */
+  export type DeckUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Decks.
+     */
+    data: XOR<DeckUpdateManyMutationInput, DeckUncheckedUpdateManyInput>
+    /**
+     * Filter which Decks to update
+     */
+    where?: DeckWhereInput
+    /**
+     * Limit how many Decks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deck updateManyAndReturn
+   */
+  export type DeckUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * The data used to update Decks.
+     */
+    data: XOR<DeckUpdateManyMutationInput, DeckUncheckedUpdateManyInput>
+    /**
+     * Filter which Decks to update
+     */
+    where?: DeckWhereInput
+    /**
+     * Limit how many Decks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deck upsert
+   */
+  export type DeckUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Deck to update in case it exists.
+     */
+    where: DeckWhereUniqueInput
+    /**
+     * In case the Deck found by the `where` argument doesn't exist, create a new Deck with this data.
+     */
+    create: XOR<DeckCreateInput, DeckUncheckedCreateInput>
+    /**
+     * In case the Deck was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DeckUpdateInput, DeckUncheckedUpdateInput>
+  }
+
+  /**
+   * Deck delete
+   */
+  export type DeckDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+    /**
+     * Filter which Deck to delete.
+     */
+    where: DeckWhereUniqueInput
+  }
+
+  /**
+   * Deck deleteMany
+   */
+  export type DeckDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Decks to delete
+     */
+    where?: DeckWhereInput
+    /**
+     * Limit how many Decks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Deck without action
+   */
+  export type DeckDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Deck
+     */
+    select?: DeckSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Deck
+     */
+    omit?: DeckOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -1901,6 +2987,17 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const DeckScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    pathname: 'pathname',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DeckScalarFieldEnum = (typeof DeckScalarFieldEnum)[keyof typeof DeckScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -2026,6 +3123,58 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
+  export type DeckWhereInput = {
+    AND?: DeckWhereInput | DeckWhereInput[]
+    OR?: DeckWhereInput[]
+    NOT?: DeckWhereInput | DeckWhereInput[]
+    id?: StringFilter<"Deck"> | string
+    name?: StringFilter<"Deck"> | string
+    pathname?: StringFilter<"Deck"> | string
+    createdAt?: DateTimeFilter<"Deck"> | Date | string
+    updatedAt?: DateTimeFilter<"Deck"> | Date | string
+  }
+
+  export type DeckOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pathname?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeckWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: DeckWhereInput | DeckWhereInput[]
+    OR?: DeckWhereInput[]
+    NOT?: DeckWhereInput | DeckWhereInput[]
+    name?: StringFilter<"Deck"> | string
+    pathname?: StringFilter<"Deck"> | string
+    createdAt?: DateTimeFilter<"Deck"> | Date | string
+    updatedAt?: DateTimeFilter<"Deck"> | Date | string
+  }, "id">
+
+  export type DeckOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pathname?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DeckCountOrderByAggregateInput
+    _max?: DeckMaxOrderByAggregateInput
+    _min?: DeckMinOrderByAggregateInput
+  }
+
+  export type DeckScalarWhereWithAggregatesInput = {
+    AND?: DeckScalarWhereWithAggregatesInput | DeckScalarWhereWithAggregatesInput[]
+    OR?: DeckScalarWhereWithAggregatesInput[]
+    NOT?: DeckScalarWhereWithAggregatesInput | DeckScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Deck"> | string
+    name?: StringWithAggregatesFilter<"Deck"> | string
+    pathname?: StringWithAggregatesFilter<"Deck"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"Deck"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Deck"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     name: string
@@ -2085,6 +3234,62 @@ export namespace Prisma {
     name?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeckCreateInput = {
+    id?: string
+    name: string
+    pathname: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeckUncheckedCreateInput = {
+    id?: string
+    name: string
+    pathname: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeckUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pathname?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeckUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pathname?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeckCreateManyInput = {
+    id?: string
+    name: string
+    pathname: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DeckUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pathname?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DeckUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    pathname?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -2172,6 +3377,30 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type DeckCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pathname?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeckMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pathname?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DeckMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    pathname?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
