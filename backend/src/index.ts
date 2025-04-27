@@ -1,11 +1,13 @@
 import express from 'express';
 import deckRoutes from './routes/deck.routes';
+import cardRoutes from './routes/card.routes';
 
 const app = express();
 
-app.use(express.json()); // Important pour lire le body JSON
+app.use(express.json());
 
 app.use('/api', deckRoutes);
+app.use('/api', cardRoutes);
 
 app.get('/ping', (req, res) => {
   res.status(200).send('pong');
