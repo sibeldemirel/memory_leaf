@@ -10,7 +10,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",
     "test": "jest --passWithNoTests",
-    "lint": "eslint . --config eslint.config.js"
+    "lint": "eslint . --config eslint.config.js",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "",
