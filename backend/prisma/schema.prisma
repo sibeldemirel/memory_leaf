@@ -31,6 +31,10 @@ model Deck {
   pathname  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  newCardsCount        Int     @default(0)
+  learningCardsCount   Int     @default(0)
+  reviewCardsCount     Int     @default(0)
+  accuracyRate         Float   @default(0.0)
 
   userId    String
   user      User     @relation(fields: [userId], references: [id])
