@@ -11,6 +11,22 @@ interface CreateCardData {
 }
 
 export const createCardService = async (data: CreateCardData) => {
+  const today = new Date();
+  let fieldToIncrement: 'newCardsCount' | 'reviewCardsCount' | 'learningCardsCount' = 'newCardsCount';
+
+  if (data.dueDate <= today) {
+    fieldToIncrement = 'reviewCardsCount';
+  }
+
+  await prisma.deck.update({
+    where: { id: data.deckId },
+    data: {
+      [fieldToIncrement]: {
+        increment: 1,
+      },
+    },
+  });
+  
   return prisma.card.create({
     data,
   });
