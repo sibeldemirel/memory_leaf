@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 interface CreateDeckData {
+  userId: any;
   name: string;
   pathname: string;
 }
@@ -12,6 +13,9 @@ export const createDeckService = async (data: CreateDeckData) => {
     data: {
       name: data.name,
       pathname: data.pathname,
+      user: {
+        connect: { id: data.userId },
+      },
     },
   });
 };
