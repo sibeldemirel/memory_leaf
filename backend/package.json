@@ -11,7 +11,9 @@
     "prisma:studio": "prisma studio",
     "test": "jest --passWithNoTests",
     "lint": "eslint . --config eslint.config.js",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:deploy": "npx prisma migrate deploy && npx prisma generate",
+    "start:prod": "npm run db:deploy && node dist/index.js"
   },
   "keywords": [],
   "author": "",

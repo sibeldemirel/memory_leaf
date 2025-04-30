@@ -3,14 +3,14 @@ import { createDeckService, deleteDeckService, getAllDecksService, updateDeckSer
 
 export const createDeck: RequestHandler = async (req, res) => {
   try {
-    const { name, pathname } = req.body;
+    const { name, pathname, userId } = req.body;
 
     if (!name || !pathname) {
       res.status(400).json({ success: false, message: 'Missing fields' });
       return;
     }
 
-    const deck = await createDeckService({ name, pathname });
+    const deck = await createDeckService({ name, pathname, userId });
 
     res.status(201).json({ success: true, data: deck, message: 'Deck created successfully' });
   } catch (error) {
