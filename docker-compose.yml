@@ -28,15 +28,14 @@ services:
     restart: unless-stopped
     ports:
       - "3000:3000"
-    environment:
-      DATABASE_URL: ${DATABASE_URL}
-      MONGODB_URL: ${MONGODB_URL}
+    env_file:
+      - ./backend/.env.docker
     depends_on:
       - postgres
       - mongodb
-#    volumes:
-#      - ./backend:/app
-#      - /app/node_modules
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
 
 volumes:
   pgdata:
