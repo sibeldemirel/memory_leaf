@@ -13,7 +13,8 @@
     "lint": "eslint . --config eslint.config.js",
     "postinstall": "prisma generate",
     "db:deploy": "npx prisma migrate deploy && npx prisma generate",
-    "start:prod": "npm run db:deploy && node dist/index.js"
+    "start:prod": "npm run db:deploy && node dist/index.js",
+    "test:flow": "jest src/__tests__/memoryleafFlow.test.ts --forceExit --detectOpenHandles"
   },
   "keywords": [],
   "author": "",
