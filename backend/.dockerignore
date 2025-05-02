@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+dist
+.env
+.env.docker
+Dockerfile.dev
+Dockerfile
+*.test.ts
+src/__tests__/
