@@ -24,18 +24,16 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: memoryleaf-backend
     restart: unless-stopped
     ports:
       - "3000:3000"
     env_file:
-      - ./backend/.env.docker
+      - ./backend/.env
     depends_on:
       - postgres
       - mongodb
-    volumes:
-      - ./backend:/app
-      - /app/node_modules
 
 volumes:
   pgdata:
