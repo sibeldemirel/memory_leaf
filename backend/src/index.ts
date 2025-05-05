@@ -10,7 +10,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const MAX_RETRIES = 5;
-const RETRY_DELAY_MS = 5000; // 5 secondes
+const RETRY_DELAY_MS = 5000;
+
+const app = express();
+
+app.use(express.json());
+app.use(logRequest);
+
+app.use('/api', userRoutes);
+app.use('/api', deckRoutes);
+app.use('/api', cardRoutes);
+app.use('/api', reviewSessionRoutes);
+
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
 
 async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   try {
@@ -28,27 +42,13 @@ async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   }
 }
 
-async function bootstrap() {
-  await connectWithRetry();
-
-  const app = express();
-
-  app.use(express.json());
-  app.use(logRequest);
-
-  app.use('/api', userRoutes);
-  app.use('/api', deckRoutes);
-  app.use('/api', cardRoutes);
-  app.use('/api', reviewSessionRoutes);
-    
-  app.get('/', (req, res) => {
-    res.send('Hello World!');
-  });
-
+if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
+  connectWithRetry().then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
   });
 }
 
-bootstrap();
+export default app;
