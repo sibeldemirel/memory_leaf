@@ -13,10 +13,9 @@ export function DeckListContainer() {
     async function loadDecks() {
       try {
         const decksData = await fetchDecks();
-        console.log("Decks récupérés :", decksData);
         setDecks(decksData);
       } catch (error) {
-        console.error("Erreur dans loadDecks :", error); // 👈
+        console.error("Erreur dans loadDecks :", error);
       } finally {
         setLoading(false);
       }
@@ -28,9 +27,15 @@ export function DeckListContainer() {
     return <p>Chargement des decks...</p>;
   }
 
+  function handleDelete(name: string) {
+    if (confirm(`Es-tu sûr de vouloir supprimer le deck "${name}" ?`)) {
+      alert(`Deck "${name}" supprimé ! 🚮`);
+    }
+  }
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      <DeckList decks={decks} />
+      <DeckList decks={decks} onDelete={handleDelete}/>
     </div>
   );
 }
