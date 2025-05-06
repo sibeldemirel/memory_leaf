@@ -20,7 +20,7 @@ export function DeckList({ decks, onDelete }: DeckListProps) {
             <th className="border-y border-gray-200 bg-gray-100 p-4">Nouvelles cartes</th>
             <th className="border-y border-gray-200 bg-gray-100 p-4">Cartes en apprentissage</th>
             <th className="border-y border-gray-200 bg-gray-100 p-4">Cartes à réviser</th>
-            <th className="border-y border-gray-200 bg-gray-100 p-4 text-center">Actions</th> {/* 👈 Nouvelle colonne */}
+            <th className="border-y border-gray-200 bg-gray-100 p-4 text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -38,15 +38,15 @@ export function DeckList({ decks, onDelete }: DeckListProps) {
                   >
                     Voir
                   </Link>
-                  <button
+                  <Link
+                    href={`/decks/${deck.id}/edit`}
                     className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition"
-                    onClick={() => alert(`Modifier le deck ${deck.name}`)}
                   >
                     Modifier
-                  </button>
+                  </Link>
                   <button
                     className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition"
-                    onClick={() => onDelete(deck.name)}
+                    onClick={() => onDelete(deck.id)}
                   >
                     Supprimer
                   </button>

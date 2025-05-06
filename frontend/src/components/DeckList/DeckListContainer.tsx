@@ -27,15 +27,31 @@ export function DeckListContainer() {
     return <p>Chargement des decks...</p>;
   }
 
-  function handleDelete(name: string) {
-    if (confirm(`Es-tu sûr de vouloir supprimer le deck "${name}" ?`)) {
-      alert(`Deck "${name}" supprimé ! 🚮`);
+  async function handleDelete(deckId: string) {
+    if (!confirm("Es-tu sûr de vouloir supprimer ce deck ?")) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`http://localhost:5000/api/decks/${deckId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        alert("Deck supprimé avec succès !");
+        setDecks((prev) => prev.filter((deck) => deck.id !== deckId));
+      } else {
+        alert("Erreur lors de la suppression du deck.");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la suppression :", error);
+      alert("Erreur inattendue lors de la suppression.");
     }
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-white">
-      <DeckList decks={decks} onDelete={handleDelete}/>
+      <DeckList decks={decks} onDelete={handleDelete} />
     </div>
   );
 }
