@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
 import { Header } from "@/components/Header";
-//import "@/styles/globals.css";
+import "@/styles/globals.css";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
-      <body className="min-h-screen bg-neutral-100 text-neutral-900">
+      <body>
         <Header />
-        <main className="p-4">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );

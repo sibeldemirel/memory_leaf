@@ -6,6 +6,7 @@ import reviewSessionRoutes from './routes/reviewSession.routes';
 import mongoose from 'mongoose';
 import { logRequest } from './middleware/logRequests';
 import dotenv from 'dotenv';
+import { corsMiddleware } from './middleware/corsConfig';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const RETRY_DELAY_MS = 5000;
 const app = express();
 
 app.use(express.json());
+app.use(corsMiddleware);
 app.use(logRequest);
 
 app.use('/api', userRoutes);
@@ -43,9 +45,9 @@ async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
 }
 
 if (process.env.NODE_ENV !== 'test') {
-  const PORT = process.env.PORT || 3000;
+  const PORT = Number(process.env.PORT) || 5000;
   connectWithRetry().then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
   });
