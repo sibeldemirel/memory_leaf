@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -36,8 +36,18 @@ export const updateDeckService = async (id: string, data: { name?: string; pathn
 };
 
 export const deleteDeckService = async (id: string) => {
-    return prisma.deck.delete({
+  try {
+    const deletedDeck = await prisma.deck.delete({
       where: { id },
     });
-  };
+    return deletedDeck;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw new Error('Deck not found');
+      }
+    }
+    throw error;
+  }
+};
   

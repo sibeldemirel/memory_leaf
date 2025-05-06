@@ -3,7 +3,7 @@ import Link from "next/link";
 
 type DeckListProps = {
   decks: Deck[];
-  onDelete: (name: string) => void;
+  onDelete: (id: string) => void;
 };
 
 export function DeckList({ decks, onDelete }: DeckListProps) {
@@ -12,50 +12,52 @@ export function DeckList({ decks, onDelete }: DeckListProps) {
   }
 
   return (
-    <div className="p-6 overflow-x-auto w-full">
-      <table className="w-full min-w-max table-auto text-left">
-        <thead>
-          <tr>
-            <th className="border-y border-gray-200 bg-gray-100 p-4">Nom du deck</th>
-            <th className="border-y border-gray-200 bg-gray-100 p-4">Nouvelles cartes</th>
-            <th className="border-y border-gray-200 bg-gray-100 p-4">Cartes en apprentissage</th>
-            <th className="border-y border-gray-200 bg-gray-100 p-4">Cartes à réviser</th>
-            <th className="border-y border-gray-200 bg-gray-100 p-4 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {decks.map((deck) => (
-            <tr key={deck.id} className="hover:bg-gray-50 transition">
-              <td className="p-4 border-b border-gray-200">{deck.name}</td>
-              <td className="p-4 border-b border-gray-200">{deck.newCardsCount}</td>
-              <td className="p-4 border-b border-gray-200">{deck.learningCardsCount}</td>
-              <td className="p-4 border-b border-gray-200">{deck.reviewCardsCount}</td>
-              <td className="p-4 border-b border-gray-200 text-center">
-                <div className="flex justify-center gap-2">
-                  <Link
-                    href={`/decks/${deck.id}`}
-                    className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition"
-                  >
-                    Voir
-                  </Link>
-                  <Link
-                    href={`/decks/${deck.id}/edit`}
-                    className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition"
-                  >
-                    Modifier
-                  </Link>
-                  <button
-                    className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition"
-                    onClick={() => onDelete(deck.id)}
-                  >
-                    Supprimer
-                  </button>
-                </div>
-              </td>
+    <div className="px-4 py-2 w-full bg-gray-200">
+      <div className="overflow-x-auto">
+        <table className="min-w-full table-auto text-center">
+          <thead>
+            <tr>
+              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm">Nom du deck</th>
+              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm hidden sm:table-cell">Nouvelles cartes</th>
+              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm hidden md:table-cell">Cartes en apprentissage</th>
+              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm hidden lg:table-cell">Cartes à réviser</th>
+              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm text-center">Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {decks.map((deck) => (
+              <tr key={deck.id} className="p-2 hover:bg-gray-50 transition">
+                <td className="p-2 border-b border-gray-200 truncate">{deck.name}</td>
+                <td className="p-2 border-b border-gray-200 hidden sm:table-cell">{deck.newCardsCount}</td>
+                <td className="p-2 border-b border-gray-200 hidden md:table-cell">{deck.learningCardsCount}</td>
+                <td className="p-2 border-b border-gray-200 hidden lg:table-cell">{deck.reviewCardsCount}</td>
+                <td className="p-2 border-b border-gray-200 text-center">
+                  <div className="flex flex-wrap justify-center gap-2">
+                    <Link
+                      href={`/decks/${deck.id}`}
+                      className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition whitespace-nowrap"
+                    >
+                      Voir
+                    </Link>
+                    <Link
+                      href={`/decks/${deck.id}/edit`}
+                      className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition whitespace-nowrap"
+                    >
+                      Modifier
+                    </Link>
+                    <button
+                      className="px-3 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600 transition whitespace-nowrap"
+                      onClick={() => onDelete(deck.id)}
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -50,7 +50,7 @@ export function DeckListContainer() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-white">
+    <div className="flex min-h-screen items-start justify-center bg-white">
       <DeckList decks={decks} onDelete={handleDelete} />
     </div>
   );

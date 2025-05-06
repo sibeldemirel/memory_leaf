@@ -5,9 +5,9 @@ import "@/styles/globals.css";
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="fr">
-      <body className="min-h-screen bg-neutral-200 text-neutral-900">
+      <body>
         <Header />
-        <main className="p-4">{children}</main>
+        <main>{children}</main>
       </body>
     </html>
   );
