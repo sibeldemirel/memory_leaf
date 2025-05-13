@@ -21,12 +21,18 @@ export const createDeckService = async (data: CreateDeckData) => {
 };
 
 export const getAllDecksService = async () => {
-    return prisma.deck.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  };
+  return prisma.deck.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+};
+
+export const getDeckByIdService = async (id: string) => {
+  return prisma.deck.findUnique({
+    where: { id },
+  });
+};
 
 export const updateDeckService = async (id: string, data: { name?: string; pathname?: string }) => {
   return prisma.deck.update({
@@ -50,4 +56,3 @@ export const deleteDeckService = async (id: string) => {
     throw error;
   }
 };
-  
