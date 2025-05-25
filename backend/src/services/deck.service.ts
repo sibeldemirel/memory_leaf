@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@prisma/client';
+import { slugify } from '../utils/slugify';
 
 const prisma = new PrismaClient();
 
@@ -21,19 +22,40 @@ export const createDeckService = async (data: CreateDeckData) => {
 };
 
 export const getAllDecksService = async () => {
-    return prisma.deck.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-  };
-
-export const updateDeckService = async (id: string, data: { name?: string; pathname?: string }) => {
-  return prisma.deck.update({
-    where: { id },
-    data,
+  return prisma.deck.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
   });
 };
+
+export const getDeckByIdService = async (id: string) => {
+  return prisma.deck.findUnique({
+    where: { id },
+  });
+};
+
+interface UpdateDeckData {
+  id: string;
+  name: string;
+//  userId: string;
+}
+
+export const updateDeckService = async (data: UpdateDeckData) => {
+  const pathname = slugify(data.name);
+
+  return prisma.deck.update({
+    where: {
+      id: data.id,
+//      userId: data.userId, 
+    },
+    data: {
+      name: data.name,
+      pathname,
+    },
+  });
+};
+
 
 export const deleteDeckService = async (id: string) => {
   try {
@@ -50,4 +72,3 @@ export const deleteDeckService = async (id: string) => {
     throw error;
   }
 };
-  

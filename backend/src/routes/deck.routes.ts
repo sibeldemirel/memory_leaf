@@ -1,12 +1,13 @@
 import { Router } from 'express';
-import { createDeck, deleteDeck, getAllDecks, updateDeck } from '../controllers/deck.controller';
+import { createDeck, deleteDeck, getAllDecks, getDeckById, updateDeck } from '../controllers/deck.controller';
 
 const router = Router();
 
-router.post('/decks', createDeck);
-router.get('/decks', getAllDecks);
+router.get('/decks/:id', getDeckById);
 router.put('/decks/:id', updateDeck);
 router.delete('/decks/:id', deleteDeck);
+router.post('/decks', createDeck);
+router.get('/decks', getAllDecks);
 
 
 export default router;
