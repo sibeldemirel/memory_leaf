@@ -1,47 +1,45 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { fetchDeckById, updateDeck } from "@/lib/deckApi";
-import { Deck } from "@/types/Deck";
-import { EditDeckForm } from "./EditDeckForm";
+import { useEffect, useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
+import { fetchDeckById, updateDeck } from '@/lib/deckApi';
+import { EditDeckForm } from './EditDeckForm';
+import toast from 'react-hot-toast';
 
-export function EditDeckContainer() {
-  const { id } = useParams() as { id: string };
+export default function EditDeckContainer() {
+  const { id } = useParams();
   const router = useRouter();
-
-  const [deck, setDeck] = useState<Deck | null>(null);
+  const [deck, setDeck] = useState<{ id: string; name: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadDeck() {
-      const data = await fetchDeckById(id);
-      setDeck(data);
-      setLoading(false);
+      try {
+        const data = await fetchDeckById(id as string);
+        setDeck(data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    if (id) {
-      loadDeck();
-    }
+    loadDeck();
   }, [id]);
 
-  async function handleSubmit(name: string, pathname: string) {
-    const success = await updateDeck(id, { name, pathname });
-    if (success) {
-      router.push("/");
-    } else {
-      alert("Erreur lors de la mise à jour.");
+  const handleSubmit = async (name: string) => {
+    try {
+      const updated = await updateDeck(id as string, name);
+      setDeck(updated);
+      toast.success('✅ Deck mis à jour !');
+    } catch (err) {
+      toast.error('❌ Erreur lors de la mise à jour');
+      console.error(err);
     }
-  }
+  };
 
-  if (loading) return <p className="p-4">Chargement...</p>;
-  if (!deck) return <p className="p-4">Deck introuvable.</p>;
+  if (loading) return <p>Chargement...</p>;
+  if (!deck) return <p>Deck introuvable.</p>;
 
-  return (
-    <EditDeckForm
-      initialName={deck.name}
-      initialPathname={deck.pathname}
-      onSubmit={handleSubmit}
-    />
-  );
+  return <EditDeckForm initialName={deck.name} onSubmit={handleSubmit} />;
 }

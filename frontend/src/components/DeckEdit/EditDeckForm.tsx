@@ -1,20 +1,19 @@
 'use client';
 
+import Link from "next/link";
 import { useState } from "react";
 
 type EditDeckFormProps = {
   initialName: string;
-  initialPathname: string;
-  onSubmit: (name: string, pathname: string) => void;
+  onSubmit: (name: string) => void;
 };
 
-export function EditDeckForm({ initialName, initialPathname, onSubmit }: EditDeckFormProps) {
+export function EditDeckForm({ initialName, onSubmit }: EditDeckFormProps) {
   const [name, setName] = useState(initialName);
-  const [pathname, setPathname] = useState(initialPathname);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    onSubmit(name, pathname);
+    onSubmit(name);
   }
 
   return (
@@ -34,20 +33,14 @@ export function EditDeckForm({ initialName, initialPathname, onSubmit }: EditDec
           />
         </div>
 
-        <div>
-          <label htmlFor="pathname" className="block text-sm font-medium text-gray-700 mb-1">
-            Pathname
-          </label>
-          <input
-            id="pathname"
-            value={pathname}
-            onChange={(e) => setPathname(e.target.value)}
-            className="w-full p-2 border border-gray-300 rounded"
-            required
-          />
-        </div>
+        <div className="flex justify-between gap-4 pt-4">
+          <Link
+            href="/decks"
+            className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
+          >
+            Retour à la liste
+          </Link>
 
-        <div className="flex justify-end gap-4 pt-4">
           <button
             type="submit"
             className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"

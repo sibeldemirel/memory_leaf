@@ -1,9 +1,11 @@
-import { Request, Response, RequestHandler } from 'express';
+import { RequestHandler } from 'express';
 import { createDeckService, deleteDeckService, getAllDecksService, getDeckByIdService, updateDeckService } from '../services/deck.service';
+import { slugify } from '../utils/slugify';
 
 export const createDeck: RequestHandler = async (req, res) => {
   try {
-    const { name, pathname, userId } = req.body;
+    const { name, userId } = req.body;
+    const pathname = slugify(name);
 
     if (!name || !pathname) {
       res.status(400).json({ success: false, message: 'Missing fields' });
@@ -48,15 +50,15 @@ export const getDeckById: RequestHandler = async (req, res) => {
 export const updateDeck: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, pathname } = req.body;
+    const { name } = req.body;
 
-    if (!name && !pathname) {
-      res.status(400).json({ success: false, message: 'At least one field must be provided' });
+    if (!name) {
+      res.status(400).json({ success: false, message: 'Missing fields' });
       return;
     }
 
-    const updatedDeck = await updateDeckService(id, { name, pathname });
-
+    const updatedDeck = await updateDeckService({ id, name });
+    
     res.status(200).json({ success: true, data: updatedDeck, message: 'Deck updated successfully' });
   } catch (error) {
     console.error('Error updating deck:', error);

@@ -42,19 +42,19 @@ export async function fetchDeckById(id: string): Promise<Deck | null> {
 }
 
 
-export async function updateDeck(id: string, updatedData: { name: string; pathname: string }): Promise<boolean> {
-  try {
-    const res = await fetch(`http://localhost:5000/api/decks/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedData),
-    });
+export async function updateDeck(id: string, name: string) {
+  const res = await fetch(`http://localhost:5000/api/decks/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name }),
+  });
 
-    return res.ok;
-  } catch (error) {
-    console.error("Erreur lors de la mise à jour du deck :", error);
-    return false;
+  if (!res.ok) {
+    throw new Error('Erreur lors de la mise à jour du deck');
   }
+
+  const data = await res.json();
+  return data.data;
 }
