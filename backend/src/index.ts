@@ -2,6 +2,7 @@ import express from 'express';
 import userRoutes from './routes/user.routes';
 import deckRoutes from './routes/deck.routes';
 import cardRoutes from './routes/card.routes';
+import logRoutes from './routes/log.routes';
 import reviewSessionRoutes from './routes/reviewSession.routes';
 import mongoose from 'mongoose';
 import { logRequest } from './middleware/logRequests';
@@ -22,11 +23,8 @@ app.use(logRequest);
 app.use('/api', userRoutes);
 app.use('/api', deckRoutes);
 app.use('/api', cardRoutes);
+app.use('/api', logRoutes);
 app.use('/api', reviewSessionRoutes);
-
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
 
 async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   try {
