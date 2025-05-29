@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   postgres:
     image: postgres:15
@@ -24,16 +26,20 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     container_name: memoryleaf-backend
     restart: unless-stopped
     ports:
       - "5000:5000"
     env_file:
       - ./backend/.env
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
     depends_on:
       - postgres
       - mongodb
+    command: npm run dev
 
 volumes:
   pgdata:
