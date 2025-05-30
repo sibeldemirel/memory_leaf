@@ -41,6 +41,23 @@ services:
       - mongodb
     command: npm run dev
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: memoryleaf-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    command: npm run dev
+
 volumes:
   pgdata:
   mongodata:
