@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { Card, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -39,6 +39,12 @@ export const getAllCardsService = async () => {
     },
   });
 };
+
+export async function getCardsByDeckIdService(deckId: string): Promise<Card[]> {
+  return prisma.card.findMany({
+    where: { deckId },
+  });
+}
 
 export const updateCardService = async (id: string, data: Partial<CreateCardData>) => {
   return prisma.card.update({

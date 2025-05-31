@@ -5,9 +5,11 @@ type DeckApiResponse = {
   data: Deck[] | Deck;
 };
 
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+
 export async function fetchDecks(): Promise<Deck[]> {
   try {
-    const res = await fetch("http://localhost:5000/api/decks");
+    const res = await fetch(`${BASE_URL}/api/decks`);
     const json: DeckApiResponse = await res.json();
 
     if (json.success && Array.isArray(json.data)) {
@@ -23,7 +25,7 @@ export async function fetchDecks(): Promise<Deck[]> {
 
 export async function fetchDeckById(id: string): Promise<Deck | null> {
   try {
-    const url = `http://localhost:5000/api/decks/${id}`;
+    const url = `${BASE_URL}/api/decks/${id}`;
 
     const res = await fetch(url, {
       method: 'GET',
@@ -32,8 +34,7 @@ export async function fetchDeckById(id: string): Promise<Deck | null> {
       },
     });
 
-    const text = await res.text();
-    const json = JSON.parse(text);
+    const json = await res.json();
     return json.data as Deck;
   } catch (error) {
     console.error("Erreur lors de la récupération du deck", error);
@@ -43,7 +44,7 @@ export async function fetchDeckById(id: string): Promise<Deck | null> {
 
 
 export async function updateDeck(id: string, name: string) {
-  const res = await fetch(`http://localhost:5000/api/decks/${id}`, {
+  const res = await fetch(`${BASE_URL}/api/decks/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

@@ -34,7 +34,7 @@ export function DeckList({ decks, onDelete }: DeckListProps) {
                 <td className="p-2 border-b border-gray-200 text-center">
                   <div className="flex flex-wrap justify-center gap-2">
                     <Link
-                      href={`/decks/${deck.id}`}
+                      href={`/decks/${deck.id}/cards`}
                       className="px-3 py-1 bg-blue-500 text-white text-xs rounded hover:bg-blue-600 transition whitespace-nowrap"
                     >
                       Voir
