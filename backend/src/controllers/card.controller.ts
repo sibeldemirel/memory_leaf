@@ -48,7 +48,7 @@ export const getCardsByDeckId: RequestHandler = async (req, res) => {
 export const updateCard: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { question, answer, pathname, dueDate, deckId } = req.body;
+    const { question, answer, dueDate, deckId } = req.body;
 
     const updatedCard = await updateCardService(id, {
       question,
