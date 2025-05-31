@@ -1,19 +1,19 @@
 import { Card, PrismaClient } from '@prisma/client';
+import { slugify } from '../utils/slugify';
 
 const prisma = new PrismaClient();
 
 interface CreateCardData {
   question: string;
   answer: string;
-  pathname: string;
   dueDate: Date;
   deckId: string;
 }
 
 export const createCardService = async (data: CreateCardData) => {
   const today = new Date();
-  let fieldToIncrement: 'newCardsCount' | 'reviewCardsCount' | 'learningCardsCount' = 'newCardsCount';
 
+  let fieldToIncrement: 'newCardsCount' | 'reviewCardsCount' | 'learningCardsCount' = 'newCardsCount';
   if (data.dueDate <= today) {
     fieldToIncrement = 'reviewCardsCount';
   }
@@ -26,9 +26,12 @@ export const createCardService = async (data: CreateCardData) => {
       },
     },
   });
-  
+
   return prisma.card.create({
-    data,
+    data: {
+      ...data,
+      pathname: slugify(data.question),
+    },
   });
 };
 
