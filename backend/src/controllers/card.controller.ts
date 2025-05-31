@@ -1,5 +1,5 @@
 import { Request, Response, RequestHandler } from 'express';
-import { createCardService, getAllCardsService, updateCardService, deleteCardService } from '../services/card.service';
+import { createCardService, getAllCardsService, updateCardService, deleteCardService, getCardsByDeckIdService } from '../services/card.service';
 
 export const createCard: RequestHandler = async (req, res) => {
   try {
@@ -25,6 +25,23 @@ export const getAllCards: RequestHandler = async (req, res) => {
   } catch (error) {
     console.error('Error fetching cards:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+export const getCardsByDeckId: RequestHandler = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const cards = await getCardsByDeckIdService(id);
+
+    res.status(200).json({
+      success: true,
+      data: cards,
+      message: `Cartes du paquet ${id} récupérées avec succès`,
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des cartes du deck', error);
+    res.status(500).json({ success: false, message: 'Erreur serveur' });
   }
 };
 
