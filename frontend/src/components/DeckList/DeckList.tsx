@@ -17,7 +17,7 @@ export function DeckList({ decks, onDelete }: DeckListProps) {
         <table className="min-w-full table-auto text-center">
           <thead>
             <tr>
-              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm">Nom du deck</th>
+              <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm">Nom du paquet</th>
               <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm hidden sm:table-cell">Nouvelles cartes</th>
               <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm hidden md:table-cell">Cartes en apprentissage</th>
               <th className="p-2 border-y border-gray-200 bg-gray-100 text-sm hidden lg:table-cell">Cartes à réviser</th>

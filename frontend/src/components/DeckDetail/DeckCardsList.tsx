@@ -18,7 +18,7 @@ export function DeckCardsList({ cards, loading, deckId }: Props) {
         <div className="flex gap-4">
           <Link
             href="/decks"
-            className="text-sm text-blue-600 hover:underline"
+            className="text-sm text-blue-600 hover:underline px-4 py-2 h-full flex items-center"
           >
             ← Retour aux paquets
           </Link>
