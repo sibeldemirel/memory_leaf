@@ -3,11 +3,13 @@
 import { useEffect, useState } from "react";
 import { Deck } from "@/types/Deck";
 import { DeckList } from "./DeckList";
-import { fetchDecks } from "@/lib/deckApi";
+import { AddDeckModal } from "./AddDeckModal";
+import { fetchDecks, createDeck } from "@/lib/deckApi";
 
 export function DeckListContainer() {
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function loadDecks() {
@@ -23,14 +25,8 @@ export function DeckListContainer() {
     loadDecks();
   }, []);
 
-  if (loading) {
-    return <p>Chargement des decks...</p>;
-  }
-
   async function handleDelete(deckId: string) {
-    if (!confirm("Es-tu sûr de vouloir supprimer ce deck ?")) {
-      return;
-    }
+    if (!confirm("Es-tu sûr de vouloir supprimer ce deck ?")) return;
 
     try {
       const res = await fetch(`http://localhost:5000/api/decks/${deckId}`, {
@@ -38,8 +34,8 @@ export function DeckListContainer() {
       });
 
       if (res.ok) {
-        alert("Deck supprimé avec succès !");
         setDecks((prev) => prev.filter((deck) => deck.id !== deckId));
+        alert("Deck supprimé avec succès !");
       } else {
         alert("Erreur lors de la suppression du deck.");
       }
@@ -49,9 +45,32 @@ export function DeckListContainer() {
     }
   }
 
+  async function handleAddDeck(name: string) {
+    try {
+      const newDeck = await createDeck({ name });
+      setDecks((prev) => [...prev, newDeck]);
+    } catch (error) {
+      console.error("Erreur lors de la création du deck :", error);
+      alert("Impossible d’ajouter le deck.");
+    }
+  }
+
+  if (loading) {
+    return <p>Chargement des decks...</p>;
+  }
+
   return (
     <div className="flex min-h-screen items-start justify-center bg-white">
-      <DeckList decks={decks} onDelete={handleDelete} />
+      <DeckList
+        decks={decks}
+        onDelete={handleDelete}
+        onAddClick={() => setIsModalOpen(true)}
+      />
+      <AddDeckModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onAdd={handleAddDeck}
+      />
     </div>
   );
 }
