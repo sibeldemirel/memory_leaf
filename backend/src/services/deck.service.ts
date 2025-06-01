@@ -1,12 +1,17 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, Role, User } from '@prisma/client';
 import { slugify } from '../utils/slugify';
 
 const prisma = new PrismaClient();
 
 interface CreateDeckData {
-  userId: any;
+  userId: string;
   name: string;
   pathname: string;
+}
+
+interface SimpleUser {
+  userId: string;
+  role: Role;
 }
 
 export const createDeckService = async (data: CreateDeckData) => {
@@ -21,13 +26,17 @@ export const createDeckService = async (data: CreateDeckData) => {
   });
 };
 
-export const getAllDecksService = async () => {
+export const getAllDecksService = async (user: SimpleUser) => {
+  const where = user.role === 'ADMIN' ? {} : { userId: user.userId };
+
   return prisma.deck.findMany({
+    where,
     orderBy: {
       createdAt: 'desc',
     },
   });
 };
+
 
 export const getDeckByIdService = async (id: string) => {
   return prisma.deck.findUnique({
@@ -38,7 +47,6 @@ export const getDeckByIdService = async (id: string) => {
 interface UpdateDeckData {
   id: string;
   name: string;
-//  userId: string;
 }
 
 export const updateDeckService = async (data: UpdateDeckData) => {
@@ -47,7 +55,6 @@ export const updateDeckService = async (data: UpdateDeckData) => {
   return prisma.deck.update({
     where: {
       id: data.id,
-//      userId: data.userId, 
     },
     data: {
       name: data.name,
@@ -56,18 +63,17 @@ export const updateDeckService = async (data: UpdateDeckData) => {
   });
 };
 
-
 export const deleteDeckService = async (id: string) => {
   try {
-    const deletedDeck = await prisma.deck.delete({
+    return await prisma.deck.delete({
       where: { id },
     });
-    return deletedDeck;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2025') {
-        throw new Error('Deck not found');
-      }
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2025'
+    ) {
+      throw new Error('Deck not found');
     }
     throw error;
   }

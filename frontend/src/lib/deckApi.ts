@@ -9,7 +9,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
 export async function createDeck({
   name,
-  userId = "7e3906f5-aa7c-4551-b20d-1b761a7cf860",
+  userId,
 }: {
   name: string;
   userId?: string;

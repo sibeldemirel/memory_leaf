@@ -1,4 +1,4 @@
-import { Request, Response, RequestHandler } from 'express';
+import { RequestHandler } from 'express';
 import { createUserService, deleteUserService, getAllUsersService, getUserDecksService, updateUserService } from '../services/user.service';
 
 export const createUser: RequestHandler = async (req, res) => {
