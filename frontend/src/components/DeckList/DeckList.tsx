@@ -4,9 +4,10 @@ import Link from "next/link";
 type DeckListProps = {
   decks: Deck[];
   onDelete: (id: string) => void;
+  onAddClick: () => void;
 };
 
-export function DeckList({ decks, onDelete }: DeckListProps) {
+export function DeckList({ decks, onDelete, onAddClick }: DeckListProps) {
   if (decks.length === 0) {
     return <p>Aucun deck trouvé.</p>;
   }
@@ -57,6 +58,21 @@ export function DeckList({ decks, onDelete }: DeckListProps) {
             ))}
           </tbody>
         </table>
+        <div className="mt-4 flex justify-center gap-4">
+          <Link
+            href="/"
+            className="px-4 py-2 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition"
+          >
+            Retour à l'accueil
+          </Link>
+          <button
+            onClick={onAddClick}
+            className="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition"
+          >
+            Ajouter un paquet
+          </button>
+        </div>
+
       </div>
     </div>
   );

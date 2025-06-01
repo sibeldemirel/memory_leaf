@@ -7,6 +7,30 @@ type DeckApiResponse = {
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
+export async function createDeck({
+  name,
+  userId = "7e3906f5-aa7c-4551-b20d-1b761a7cf860",
+}: {
+  name: string;
+  userId?: string;
+}): Promise<Deck> {
+  const res = await fetch(`${BASE_URL}/api/decks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ name, userId }),
+  });
+
+  const json: DeckApiResponse = await res.json();
+
+  if (!res.ok || !json.success || Array.isArray(json.data)) {
+    throw new Error("Erreur lors de la création du deck");
+  }
+
+  return json.data as Deck;
+}
+
 export async function fetchDecks(): Promise<Deck[]> {
   try {
     const res = await fetch(`${BASE_URL}/api/decks`);
