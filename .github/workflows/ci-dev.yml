@@ -60,6 +60,12 @@ jobs:
         working-directory: ./backend
         run: npm run lint
 
+      - name: Push Prisma schema to DB
+        working-directory: ./backend
+        run: npx prisma db push
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
       - name: Run tests
         working-directory: ./backend
         run: npm test || echo "No tests yet"
