@@ -3,14 +3,14 @@ import { createCardService, getAllCardsService, updateCardService, deleteCardSer
 
 export const createCard: RequestHandler = async (req, res) => {
   try {
-    const { question, answer, pathname, dueDate, deckId } = req.body;
+    const { question, answer, dueDate, deckId } = req.body;
 
-    if (!question || !answer || !pathname || !dueDate || !deckId) {
+    if (!question || !answer || !dueDate || !deckId) {
       res.status(400).json({ success: false, message: 'Missing fields' });
       return;
     }
 
-    const card = await createCardService({ question, answer, pathname, dueDate: new Date(dueDate), deckId });
+    const card = await createCardService({ question, answer, dueDate: new Date(dueDate), deckId });
     res.status(201).json({ success: true, data: card, message: 'Card created successfully' });
   } catch (error) {
     console.error('Error creating card:', error);
@@ -48,12 +48,11 @@ export const getCardsByDeckId: RequestHandler = async (req, res) => {
 export const updateCard: RequestHandler = async (req, res) => {
   try {
     const { id } = req.params;
-    const { question, answer, pathname, dueDate, deckId } = req.body;
+    const { question, answer, dueDate, deckId } = req.body;
 
     const updatedCard = await updateCardService(id, {
       question,
       answer,
-      pathname,
       dueDate: dueDate ? new Date(dueDate) : undefined,
       deckId,
     });

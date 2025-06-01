@@ -23,5 +23,5 @@ export function DeckCardsContainer() {
     if (deckId) loadCards();
   }, [deckId]);
 
-  return <DeckCardsList cards={cards} loading={loading} />;
+  return <DeckCardsList cards={cards} loading={loading} deckId={deckId} />;
 }
