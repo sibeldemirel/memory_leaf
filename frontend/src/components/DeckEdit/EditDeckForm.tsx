@@ -22,7 +22,7 @@ export function EditDeckForm({ initialName, onSubmit }: EditDeckFormProps) {
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-xl shadow-md">
         <div>
           <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-            Nom du deck
+            Nom du paquet
           </label>
           <input
             id="name"
@@ -35,10 +35,10 @@ export function EditDeckForm({ initialName, onSubmit }: EditDeckFormProps) {
 
         <div className="flex justify-between gap-4 pt-4">
           <Link
-            href="/decks"
+            href="/"
             className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition"
           >
-            Retour à la liste
+            Retour à l’accueil
           </Link>
 
           <button

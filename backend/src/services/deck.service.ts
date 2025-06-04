@@ -37,7 +37,6 @@ export const getAllDecksService = async (user: SimpleUser) => {
   });
 };
 
-
 export const getDeckByIdService = async (id: string) => {
   return prisma.deck.findUnique({
     where: { id },
@@ -65,16 +64,15 @@ export const updateDeckService = async (data: UpdateDeckData) => {
 
 export const deleteDeckService = async (id: string) => {
   try {
+    await prisma.card.deleteMany({
+      where: { deckId: id },
+    });
+
     return await prisma.deck.delete({
       where: { id },
     });
   } catch (error) {
-    if (
-      error instanceof Prisma.PrismaClientKnownRequestError &&
-      error.code === 'P2025'
-    ) {
-      throw new Error('Deck not found');
-    }
+    console.error("Error deleting deck:", error);
     throw error;
   }
 };

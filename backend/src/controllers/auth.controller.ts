@@ -11,7 +11,7 @@ if (!JWT_SECRET) {
 }
 
 export const register = async (req: Request, res: Response) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   const result = registerSchema.safeParse(req.body);
   if (!result.success) {
     return res.status(400).json({
@@ -32,6 +32,7 @@ export const register = async (req: Request, res: Response) => {
         name,
         email,
         password: hashedPassword,
+        role
       },
     });
 

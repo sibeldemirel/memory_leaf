@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Deck } from "@/types/Deck";
 import { DeckList } from "./DeckList";
 import { AddDeckModal } from "./AddDeckModal";
-import { fetchDecks, createDeck } from "@/lib/deckApi";
+import { fetchDecks, createDeck, deleteDeck } from "@/lib/deckApi";
 
 export function DeckListContainer() {
   const [decks, setDecks] = useState<Deck[]>([]);
@@ -29,19 +29,12 @@ export function DeckListContainer() {
     if (!confirm("Es-tu sûr de vouloir supprimer ce deck ?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/decks/${deckId}`, {
-        method: "DELETE",
-      });
-
-      if (res.ok) {
-        setDecks((prev) => prev.filter((deck) => deck.id !== deckId));
-        alert("Deck supprimé avec succès !");
-      } else {
-        alert("Erreur lors de la suppression du deck.");
-      }
+      await deleteDeck(deckId);
+      setDecks((prev) => prev.filter((deck) => deck.id !== deckId));
+      alert("Deck supprimé avec succès !");
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
-      alert("Erreur inattendue lors de la suppression.");
+      alert("Erreur lors de la suppression du deck.");
     }
   }
 
