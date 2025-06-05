@@ -2,13 +2,13 @@ import { Role } from '@prisma/client';
 import { getDeckByIdService } from '../services/deck.service';
 import { Deck } from '@prisma/client';
 
-type AccessDenied = {
+interface AccessDenied {
   authorized: false;
   status: number;
   message: string;
 };
 
-type AccessGranted = {
+interface AccessGranted {
   authorized: true;
   deck: Deck;
 };
