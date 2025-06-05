@@ -7,8 +7,6 @@ const prisma = new PrismaClient();
 describe('MemoryLeaf Complete Flow', () => {
   let userId: string;
   let deckId: string;
-  let cardId: string;
-  let reviewSessionId: string;
 
   beforeAll(async () => {
     await prisma.reviewSession.deleteMany();
@@ -66,12 +64,10 @@ describe('MemoryLeaf Complete Flow', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.success).toBe(true);
-    cardId = response.body.data.id;
   });
 
   it('should list all decks', async () => {
-    const response = await request(app)
-      .get('/api/decks');
+    const response = await request(app).get('/api/decks');
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
@@ -79,8 +75,7 @@ describe('MemoryLeaf Complete Flow', () => {
   });
 
   it('should list all cards', async () => {
-    const response = await request(app)
-      .get('/api/cards');
+    const response = await request(app).get('/api/cards');
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
@@ -88,8 +83,7 @@ describe('MemoryLeaf Complete Flow', () => {
   });
 
   it('should get cards to review', async () => {
-    const response = await request(app)
-      .get(`/api/review-sessions/${deckId}/cards`);
+    const response = await request(app).get(`/api/review-sessions/${deckId}/cards`);
 
     expect(response.status).toBe(200);
     expect(response.body.success).toBe(true);
@@ -106,7 +100,5 @@ describe('MemoryLeaf Complete Flow', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.success).toBe(true);
-    reviewSessionId = response.body.data.session.id;
   });
-
 });
