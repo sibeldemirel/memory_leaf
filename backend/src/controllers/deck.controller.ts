@@ -58,7 +58,6 @@ export const getDeckById: RequestHandler = async (req, res) => {
 
     res.status(200).json({ success: true, data: access.deck });
   } catch (error) {
-    console.error('Erreur lors de la récupération du deck :', error);
     res.status(500).json({ success: false, message: 'Erreur lors de la récupération du deck : ', error });
   }
 };

@@ -13,8 +13,7 @@ export const createReviewSession = async (req: Request, res: Response) => {
     const session = await createReviewSessionService(userId, deckId);
     res.status(201).json({ success: true, data: session, message: 'Review session started' });
   } catch (error) {
-    console.error('Error creating review session:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error creating review session:', error });
   }
 };
 
@@ -30,7 +29,6 @@ export const getCardsToReview: RequestHandler = async (req, res) => {
     const cards = await getCardsToReviewService(deckId);
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Error fetching cards to review' });
+    res.status(500).json({ message: 'Error fetching cards to review', error });
   }
 };
