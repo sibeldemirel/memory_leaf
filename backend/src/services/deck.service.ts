@@ -71,8 +71,7 @@ export const deleteDeckService = async (id: string) => {
     return await prisma.deck.delete({
       where: { id },
     });
-  } catch (error) {
-    console.error("Error deleting deck:", error);
-    throw error;
+  } catch {
+    throw new Error('Failed to delete deck');
   }
 };
