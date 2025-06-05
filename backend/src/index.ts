@@ -28,19 +28,13 @@ app.use('/api', cardRoutes);
 app.use('/api', logRoutes);
 app.use('/api', reviewSessionRoutes);
 
-console.log("TYPE de authRoutes", typeof authRoutes);
-
 async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   try {
     await mongoose.connect(process.env.MONGO_URI!);
-    console.log('✅ MongoDB connected successfully.');
-  } catch (error) {
-    console.error(`❌ MongoDB connection failed. Retries left: ${retries - 1}`, error);
+  } catch {
     if (retries <= 1) {
-      console.error('❌ No retries left. Exiting...');
       process.exit(1);
     }
-    console.log(`⏳ Retrying MongoDB connection in ${RETRY_DELAY_MS / 1000} seconds...`);
     await new Promise(resolve => setTimeout(resolve, RETRY_DELAY_MS));
     await connectWithRetry(retries - 1);
   }

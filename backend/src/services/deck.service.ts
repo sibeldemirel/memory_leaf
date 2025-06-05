@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Role, User } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 import { slugify } from '../utils/slugify';
 
 const prisma = new PrismaClient();
