@@ -1,4 +1,4 @@
-import { Request, Response, RequestHandler } from 'express';
+import { RequestHandler } from 'express';
 import { createCardService, getAllCardsService, updateCardService, deleteCardService, getCardsByDeckIdService } from '../services/card.service';
 
 export const createCard: RequestHandler = async (req, res) => {
@@ -13,8 +13,7 @@ export const createCard: RequestHandler = async (req, res) => {
     const card = await createCardService({ question, answer, dueDate: new Date(dueDate), deckId });
     res.status(201).json({ success: true, data: card, message: 'Card created successfully' });
   } catch (error) {
-    console.error('Error creating card:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error creating card' });
   }
 };
 
@@ -23,8 +22,7 @@ export const getAllCards: RequestHandler = async (req, res) => {
     const cards = await getAllCardsService();
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
-    console.error('Error fetching cards:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error fetching cards' });
   }
 };
 
@@ -40,8 +38,7 @@ export const getCardsByDeckId: RequestHandler = async (req, res) => {
       message: `Cartes du paquet ${id} récupérées avec succès`,
     });
   } catch (error) {
-    console.error('Erreur lors de la récupération des cartes du deck', error);
-    res.status(500).json({ success: false, message: 'Erreur serveur' });
+    res.status(500).json({ success: false, message: 'Erreur lors de la récupération des cartes du paquet' });
   }
 };
 
@@ -59,8 +56,7 @@ export const updateCard: RequestHandler = async (req, res) => {
 
     res.status(200).json({ success: true, data: updatedCard, message: 'Card updated successfully' });
   } catch (error) {
-    console.error('Error updating card:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error updating card' });
   }
 };
 
@@ -72,7 +68,6 @@ export const deleteCard: RequestHandler = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'Card deleted successfully' });
   } catch (error) {
-    console.error('Error deleting card:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error deleting card' });
   }
 };
