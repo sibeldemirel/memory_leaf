@@ -9,8 +9,11 @@ export const logRequest = async (req: Request, res: Response, next: NextFunction
         url: req.originalUrl,
         statusCode: res.statusCode,
       });
-    } catch (error) {
-      console.error('Erreur lors de la sauvegarde du log de requête :', error);
+    } catch {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to save request log',
+      });
     }
   });
 

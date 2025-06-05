@@ -16,7 +16,7 @@ export const authenticateToken = (
   const token = authHeader?.split(" ")[1];
 
   if (!token) {
-    res.status(401).json({ success: false, message: "Token manquant" });
+    res.status(401).json({ success: false, message: "Missing token" });
     return;
   }
 
@@ -27,7 +27,7 @@ export const authenticateToken = (
       role: decoded.role,
     };
     next();
-  } catch (error) {
-    res.status(403).json({ success: false, message: "Token invalide" });
+  } catch {
+    res.status(403).json({ success: false, message: "Invalid or expired token" });
   }
 };
