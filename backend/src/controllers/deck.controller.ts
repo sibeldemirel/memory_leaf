@@ -31,8 +31,7 @@ export const createDeck: RequestHandler = async (req, res) => {
       message: 'Deck created successfully',
     });
   } catch (error) {
-    console.error('Error creating deck:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error creating deck : ', error});
   }
 };
 
@@ -42,8 +41,7 @@ export const getAllDecks: RequestHandler = async (req, res) => {
     const decks = await getAllDecksService(user);
     res.status(200).json({ success: true, data: decks });
   } catch (error) {
-    console.error('Error fetching decks:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error fetching decks : ', error });
   }
 };
 
@@ -61,7 +59,7 @@ export const getDeckById: RequestHandler = async (req, res) => {
     res.status(200).json({ success: true, data: access.deck });
   } catch (error) {
     console.error('Erreur lors de la récupération du deck :', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Erreur lors de la récupération du deck : ', error });
   }
 };
 
@@ -90,8 +88,7 @@ export const updateDeck: RequestHandler = async (req, res) => {
       message: 'Deck updated successfully',
     });
   } catch (error) {
-    console.error('Error updating deck:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error updating deck : ', error });
   }
 };
 
@@ -110,7 +107,6 @@ export const deleteDeck: RequestHandler = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'Deck deleted successfully' });
   } catch (error) {
-    console.error('Error deleting deck:', error);
-    res.status(500).json({ success: false, message: 'Internal server error' });
+    res.status(500).json({ success: false, message: 'Error deleting deck : ', error });
   }
 };

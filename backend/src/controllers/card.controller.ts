@@ -13,7 +13,7 @@ export const createCard: RequestHandler = async (req, res) => {
     const card = await createCardService({ question, answer, dueDate: new Date(dueDate), deckId });
     res.status(201).json({ success: true, data: card, message: 'Card created successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error creating card' });
+    res.status(500).json({ success: false, message: 'Error creating card : ', error });
   }
 };
 
@@ -22,7 +22,7 @@ export const getAllCards: RequestHandler = async (req, res) => {
     const cards = await getAllCardsService();
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error fetching cards' });
+    res.status(500).json({ success: false, message: 'Error fetching cards : ', error });
   }
 };
 
@@ -38,7 +38,7 @@ export const getCardsByDeckId: RequestHandler = async (req, res) => {
       message: `Cartes du paquet ${id} récupérées avec succès`,
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Erreur lors de la récupération des cartes du paquet' });
+    res.status(500).json({ success: false, message: 'Erreur lors de la récupération des cartes du paquet : ', error });
   }
 };
 
@@ -56,7 +56,7 @@ export const updateCard: RequestHandler = async (req, res) => {
 
     res.status(200).json({ success: true, data: updatedCard, message: 'Card updated successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error updating card' });
+    res.status(500).json({ success: false, message: 'Error updating card : ', error});
   }
 };
 
@@ -68,6 +68,6 @@ export const deleteCard: RequestHandler = async (req, res) => {
 
     res.status(200).json({ success: true, message: 'Card deleted successfully' });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error deleting card' });
+    res.status(500).json({ success: false, message: 'Error deleting card : ', error });
   }
 };
