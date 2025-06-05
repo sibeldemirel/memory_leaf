@@ -2,7 +2,7 @@ import { RequestHandler } from "express";
 import { loginSchema, registerSchema } from "../schemas/auth.schema";
 import { handleLogin, handleRegister } from "../services/auth.service";
 
-type KnownError = {
+interface KnownError {
   status?: number;
   message?: string;
 };
