@@ -9,8 +9,8 @@ import {
   createCard,
   updateCard,
 } from "@/lib/cardApi";
-import { DeckCardsList } from "./DeckCardsList";
-import { CardFormModal } from "../CardForms/CardFormModal";
+import { CardFormModal } from "./CardFormModal";
+import { DeckCardsList } from "../DeckDetail/DeckCardsList";
 
 export function DeckCardsContainer() {
   const params = useParams();
@@ -23,6 +23,7 @@ export function DeckCardsContainer() {
 
   useEffect(() => {
     async function loadCards() {
+      setLoading(true);
       const result = await fetchCardsByDeck(deckId);
       setCards(result);
       setLoading(false);
@@ -31,42 +32,37 @@ export function DeckCardsContainer() {
     if (deckId) loadCards();
   }, [deckId]);
 
-  async function handleDeleteCard(cardId: string) {
-    try {
-      await deleteCardById(cardId);
-      setCards((prev) => prev.filter((card) => card.id !== cardId));
-    } catch (error) {
-      console.error("Erreur lors de la suppression de la carte :", error);
-    }
-  }
+  const refreshCards = async () => {
+    const updated = await fetchCardsByDeck(deckId);
+    setCards(updated);
+  };
 
-  function handleCreateClick() {
+  const handleDeleteCard = async (cardId: string) => {
+    await deleteCardById(cardId);
+    await refreshCards();
+  };
+
+  const handleCreateClick = () => {
     setEditingCard(undefined);
     setModalOpen(true);
-  }
+  };
 
-  function handleEditClick(card: Card) {
+  const handleEditClick = (card: Card) => {
     setEditingCard(card);
     setModalOpen(true);
-  }
+  };
 
-  async function handleSubmitCard(
+  const handleSubmitCard = async (
     cardData: Omit<Card, "id" | "pathname">,
     cardId?: string
-  ) {
-    try {
-      if (cardId) {
-        await updateCard(cardId, cardData);
-      } else {
-        await createCard({ ...cardData, deckId });
-      }
-
-      const updated = await fetchCardsByDeck(deckId);
-      setCards(updated);
-    } catch (error) {
-      console.error("Erreur lors de la soumission de la carte :", error);
+  ) => {
+    if (cardId) {
+      await updateCard(cardId, cardData);
+    } else {
+      await createCard({ ...cardData, deckId });
     }
-  }
+    await refreshCards();
+  };
 
   return (
     <>
