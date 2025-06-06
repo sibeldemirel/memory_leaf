@@ -31,7 +31,8 @@ export default function EditDeckContainer() {
     try {
       const updated = await updateDeck(id as string, name);
       setDeck(updated);
-      toast.success('✅ Deck mis à jour !');
+      toast.success('✅ Paquet mis à jour !');
+      router.push('/decks');
     } catch (err) {
       toast.error('❌ Erreur lors de la mise à jour');
       console.error(err);
@@ -39,7 +40,7 @@ export default function EditDeckContainer() {
   };
 
   if (loading) return <p>Chargement...</p>;
-  if (!deck) return <p>Deck introuvable.</p>;
+  if (!deck) return <p>Paquet introuvable.</p>;
 
   return <EditDeckForm initialName={deck.name} onSubmit={handleSubmit} />;
 }

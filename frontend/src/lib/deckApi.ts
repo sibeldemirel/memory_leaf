@@ -1,25 +1,22 @@
 import { Deck } from "@/types/Deck";
+import { getAuthHeaders } from "@/utils/getAuthHeaders";
 
 type DeckApiResponse = {
   success: boolean;
   data: Deck[] | Deck;
 };
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function createDeck({
   name,
-  userId = "7e3906f5-aa7c-4551-b20d-1b761a7cf860",
 }: {
   name: string;
-  userId?: string;
 }): Promise<Deck> {
   const res = await fetch(`${BASE_URL}/api/decks`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, userId }),
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ name }),
   });
 
   const json: DeckApiResponse = await res.json();
@@ -33,7 +30,9 @@ export async function createDeck({
 
 export async function fetchDecks(): Promise<Deck[]> {
   try {
-    const res = await fetch(`${BASE_URL}/api/decks`);
+    const res = await fetch(`${BASE_URL}/api/decks`, {
+      headers: getAuthHeaders(),
+    });
     const json: DeckApiResponse = await res.json();
 
     if (json.success && Array.isArray(json.data)) {
@@ -49,13 +48,9 @@ export async function fetchDecks(): Promise<Deck[]> {
 
 export async function fetchDeckById(id: string): Promise<Deck | null> {
   try {
-    const url = `${BASE_URL}/api/decks/${id}`;
-
-    const res = await fetch(url, {
+    const res = await fetch(`${BASE_URL}/api/decks/${id}`, {
       method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
+      headers: getAuthHeaders(),
     });
 
     const json = await res.json();
@@ -66,13 +61,10 @@ export async function fetchDeckById(id: string): Promise<Deck | null> {
   }
 }
 
-
 export async function updateDeck(id: string, name: string) {
   const res = await fetch(`${BASE_URL}/api/decks/${id}`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: getAuthHeaders(),
     body: JSON.stringify({ name }),
   });
 
@@ -82,4 +74,18 @@ export async function updateDeck(id: string, name: string) {
 
   const data = await res.json();
   return data.data;
+}
+
+export async function deleteDeck(id: string) {
+  const res = await fetch(`${BASE_URL}/api/decks/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+
+  if (!res.ok) {
+    throw new Error("Erreur lors de la suppression du deck");
+  }
+
+  const json = await res.json();
+  return json.message;
 }

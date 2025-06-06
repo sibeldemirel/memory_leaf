@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Role } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -6,6 +6,7 @@ interface CreateUserData {
   name: string;
   email: string;
   password: string;
+  role?: Role;
 }
 
 export const createUserService = async (data: CreateUserData) => {
