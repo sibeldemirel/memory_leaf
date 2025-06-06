@@ -1,6 +1,6 @@
 import { CardStatus } from '@prisma/client';
 
-type CardCounter = {
+interface CardCounter {
   newCardsCount: number;
   learningCardsCount: number;
   reviewCardsCount: number;
@@ -26,7 +26,7 @@ export function getDeckCounter(
     } else if (oldStatus === 'REVIEW') {
       counter.reviewCardsCount -= 1;
     }
-    // status fictif "ACQUIRED" non géré pour l'instant
+    // TODO : status "ACQUIRED" not implemented
   }
 
   // ENTREE (création ou modification)
@@ -39,7 +39,7 @@ export function getDeckCounter(
     } else if (newStatus === 'REVIEW') {
       counter.reviewCardsCount += 1;
     }
-    // status fictif "ACQUIRED" non géré pour l'instant
+    // TODO : status "ACQUIRED" not implemented
   }
 
   return counter;
