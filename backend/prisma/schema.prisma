@@ -19,6 +19,12 @@ enum Role {
   USER
 }
 
+enum CardStatus {
+  NEW
+  LEARNING
+  REVIEW
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String
@@ -57,6 +63,7 @@ model Card {
   pathname  String
   dueDate   DateTime
   deckId    String
+  status    CardStatus @default(NEW)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
