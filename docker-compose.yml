@@ -58,6 +58,21 @@ services:
       - NEXT_PUBLIC_API_URL=http://localhost:5000
     command: npm run dev
 
+  pgadmin:
+      image: dpage/pgadmin4
+      container_name: memoryleaf-pgadmin
+      restart: unless-stopped
+      environment:
+        PGADMIN_DEFAULT_EMAIL: ${PG_ADMIN_USER}
+        PGADMIN_DEFAULT_PASSWORD: ${PG_ADMIN_PASSWORD}
+      ports:
+        - "5050:80"
+      depends_on:
+        - postgres
+      volumes:
+        - pgadmin_data:/var/lib/pgadmin
+
 volumes:
   pgdata:
   mongodata:
+  pgadmin_data:
