@@ -31,3 +31,15 @@ export const authenticateToken = (
     res.status(403).json({ success: false, message: "Invalid or expired token" });
   }
 };
+
+export function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  if (!req.user) {
+    res.status(401).json({ success: false, message: "Non authentifié" });
+    return;
+  }
+  if (req.user.role !== 'ADMIN') {
+    res.status(403).json({ success: false, message: "Accès réservé aux admins" });
+    return;
+  }
+  next();
+}
