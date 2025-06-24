@@ -5,7 +5,9 @@ import { useAuth } from '@/context/AuthContext';
 
 export function Header() {
   const { isLoggedIn, role, logout } = useAuth();
-
+  if (isLoggedIn === undefined || role === null) {
+    return <div>Chargement...</div>;
+  }
 
   return (
     <header className="flex justify-between items-center px-6 py-4 bg-gray-800 text-white">
@@ -21,6 +23,16 @@ export function Header() {
             className="px-4 py-2 bg-amber-600 rounded hover:bg-amber-700 transition"
           >
             Voir les logs
+          </Link>
+        )}
+
+        {isLoggedIn && (
+          <Link
+            href="/pomodoro"
+            className="px-4 py-2 bg-green-600 rounded hover:bg-green-700 transition"
+            target="_blank"
+          >
+            Timer Pomodoro
           </Link>
         )}
 
