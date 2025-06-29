@@ -4,8 +4,9 @@ import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 
 export function Header() {
-  const { isLoggedIn, role, logout } = useAuth();
-  if (isLoggedIn === undefined || role === null) {
+  const { isLoggedIn, role, logout, isLoading } = useAuth();
+
+  if (isLoading) {
     return <div>Chargement...</div>;
   }
 
