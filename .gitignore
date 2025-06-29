@@ -15,6 +15,3 @@ prisma/migrations/
 
 # System files
 .DS_Store
-
-# Docker
-**/docker-entrypoint.sh

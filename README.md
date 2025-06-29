@@ -53,6 +53,11 @@ NEXT_PUBLIC_API_URL=http://localhost:5000
 ```bash
 docker-compose up --build
 ```
+### Ou lancer l'environnement avec le script setup.sh
+
+```bash
+sh setup.sh
+```
 
 - 🖥️ Frontend : http://localhost:3000  
 - 📡 Backend API : http://localhost:5000  
