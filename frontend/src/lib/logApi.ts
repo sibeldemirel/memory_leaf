@@ -8,8 +8,8 @@ export type LogEntry = {
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export async function fetchLogs(token: string): Promise<LogEntry[]> {
-  const res = await fetch(`${BASE_URL}/api/logs`, {
+export async function fetchLogs(token: string, page = 1, limit = 10): Promise<{ logs: LogEntry[], total: number }> {
+  const res = await fetch(`${BASE_URL}/api/logs?page=${page}&limit=${limit}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -20,13 +20,11 @@ export async function fetchLogs(token: string): Promise<LogEntry[]> {
   }
 
   const data = await res.json();
-  if (!Array.isArray(data)) {
+  if (!Array.isArray(data.logs)) {
     console.error("Réponse inattendue :", data);
-    throw new Error(
-      "Format inattendu de la réponse : " +
-        (typeof data === "object" ? JSON.stringify(data) : String(data))
-    );
+    throw new Error("Format inattendu de la réponse");
   }
+
   return data;
 }
 

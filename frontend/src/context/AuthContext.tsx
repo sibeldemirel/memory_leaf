@@ -6,6 +6,7 @@ type AuthContextType = {
   isLoggedIn: boolean;
   userId: string | null;
   role: string | null;
+  isLoading: boolean;
   login: (token: string) => void;
   logout: () => void;
 };
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthContextType>({
   isLoggedIn: false,
   userId: null,
   role: null,
+  isLoading: true,
   login: () => {},
   logout: () => {},
 });
@@ -30,6 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [role, setRole] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -43,6 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setRole(null);
       setUserId(null);
     }
+    setIsLoading(false);
   }, []);
 
   const login = (token: string) => {
@@ -61,7 +65,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, role, userId, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, role, userId, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
