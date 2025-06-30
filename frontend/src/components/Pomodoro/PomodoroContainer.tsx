@@ -1,21 +1,29 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import PomodoroTimer from './PomodoroTimer';
-import { WORK_TIME, getNextPomodoroMode, PomodoroMode, LONG_BREAK, SHORT_BREAK } from './PomodoroService';
+import {
+  WORK_TIME,
+  SHORT_BREAK,
+  LONG_BREAK,
+  getNextPomodoroMode,
+  PomodoroMode,
+} from './PomodoroService';
 
 export default function PomodoroContainer() {
   const [timeLeft, setTimeLeft] = useState(WORK_TIME);
+  const [savedWorkTimeLeft, setSavedWorkTimeLeft] = useState(WORK_TIME);
   const [isRunning, setIsRunning] = useState(false);
   const [mode, setMode] = useState<PomodoroMode>('work');
   const [sessions, setSessions] = useState(0);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout | null = null;
-    if (isRunning) {
-      timer = setInterval(() => {
+    if (isRunning && !timerRef.current) {
+      timerRef.current = setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
-            clearInterval(timer!);
+            clearInterval(timerRef.current!);
+            timerRef.current = null;
             handleEndOfSession();
             return 0;
           }
@@ -23,7 +31,11 @@ export default function PomodoroContainer() {
         });
       }, 1000);
     }
-    return () => clearInterval(timer!);
+
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+      timerRef.current = null;
+    };
   }, [isRunning]);
 
   const handleEndOfSession = () => {
@@ -32,29 +44,56 @@ export default function PomodoroContainer() {
     const { nextMode, nextDuration } = getNextPomodoroMode(mode, sessions);
     setMode(nextMode);
     setTimeLeft(nextDuration);
+    if (nextMode === 'work') setSavedWorkTimeLeft(nextDuration);
   };
 
-  const handleStartPause = () => setIsRunning((prev) => !prev);
+  const handleStartPause = () => {
+    if (isRunning && timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
+    }
+    setIsRunning((prev) => !prev);
+  };
+
   const handleReset = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
     setIsRunning(false);
     setMode('work');
     setTimeLeft(WORK_TIME);
+    setSavedWorkTimeLeft(WORK_TIME);
     setSessions(0);
   };
 
   const handleManualModeChange = (newMode: PomodoroMode) => {
-  setIsRunning(false);
-  setMode(newMode);
-  if (newMode === 'work') setTimeLeft(WORK_TIME);
-  else if (newMode === 'short') setTimeLeft(SHORT_BREAK);
-  else setTimeLeft(LONG_BREAK);
-};
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+    setIsRunning(false);
 
-const handleCustomWorkDuration = (minutes: number) => {
-  setIsRunning(false);
-  setMode('work');
-  setTimeLeft(minutes * 60);
-};
+    if (mode === 'work') {
+      setSavedWorkTimeLeft(timeLeft);
+    }
+
+    setMode(newMode);
+
+    if (newMode === 'work') {
+      setTimeLeft(savedWorkTimeLeft);
+    } else if (newMode === 'short') {
+      setTimeLeft(SHORT_BREAK);
+    } else {
+      setTimeLeft(LONG_BREAK);
+    }
+  };
+
+  const handleCustomWorkDuration = (minutes: number) => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = null;
+    setIsRunning(false);
+    setMode('work');
+    const customDuration = minutes * 60;
+    setTimeLeft(customDuration);
+    setSavedWorkTimeLeft(customDuration);
+  };
 
   return (
     <PomodoroTimer
