@@ -28,9 +28,11 @@ export default function PomodoroTimer({
 
     const handleCustomSubmit = () => {
         const parsed = parseInt(customMinutes);
-        if (!isNaN(parsed) && parsed > 0) {
+        if (!isNaN(parsed) && parsed >= 1 && parsed <= 59) {
             onCustomWorkDuration(parsed);
             setCustomMinutes('');
+        } else {
+            alert('Veuillez entrer une durée entre 1 et 59 minutes.');
         }
     };
 
@@ -45,11 +47,14 @@ export default function PomodoroTimer({
                 <div className="mb-4">
                     <input
                         type="number"
+                        min="1"
+                        max="59"
                         placeholder="Durée (min)"
                         value={customMinutes}
                         onChange={(e) => setCustomMinutes(e.target.value)}
                         className="w-28 px-2 py-1 border border-gray-300 rounded-l"
                     />
+
                     <button
                         onClick={handleCustomSubmit}
                         className="px-3 py-1 bg-amber-600 text-white rounded-r"
