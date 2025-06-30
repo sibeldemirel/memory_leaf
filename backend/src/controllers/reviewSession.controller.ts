@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import { createReviewSessionService, getCardsToReviewService } from '../services/reviewSession.service';
+import { createReviewSessionService, deleteReviewSessionService, getCardsToReviewService } from '../services/reviewSession.service';
 
 export const createReviewSession = async (req: Request, res: Response) => {
   try {
@@ -30,5 +30,21 @@ export const getCardsToReview: RequestHandler = async (req, res) => {
     res.status(200).json({ success: true, data: cards });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching cards to review', error });
+  }
+};
+
+export const deleteReviewSession: RequestHandler = async (req, res) => {
+  const { sessionId } = req.params;
+
+  if (!sessionId) {
+    res.status(400).json({ success: false, message: 'Missing sessionId' });
+    return;
+  }
+
+  try {
+    await deleteReviewSessionService(sessionId);
+    res.status(200).json({ success: true, message: 'Review session deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error deleting review session', error });
   }
 };

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { createReviewSession, getCardsToReview } from '../controllers/reviewSession.controller';
+import { createReviewSession, deleteReviewSession, getCardsToReview } from '../controllers/reviewSession.controller';
 
 const router = Router();
 
@@ -28,6 +28,8 @@ const router = Router();
  *               - deckId
  *             properties:
  *               deckId:
+ *                 type: string
+ *               userId:
  *                 type: string
  *     responses:
  *       201:
@@ -59,5 +61,31 @@ router.post('/review-sessions', createReviewSession);
  *         description: Deck non trouvé ou aucune carte à réviser
  */
 router.get('/review-sessions/:deckId/cards', getCardsToReview);
+
+/**
+ * @swagger
+ * /api/review-sessions/{sessionId}:
+ *   delete:
+ *     summary: Supprimer une session de révision
+ *     tags: [ReviewSessions]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: sessionId
+ *         required: true
+ *         description: ID de la session
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Session supprimée avec succès
+ *       400:
+ *         description: Requête invalide
+ *       500:
+ *         description: Erreur serveur
+ */
+router.delete('/review-sessions/:sessionId', deleteReviewSession);
+
 
 export default router;

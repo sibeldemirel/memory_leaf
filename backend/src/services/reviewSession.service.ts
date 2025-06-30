@@ -34,3 +34,10 @@ export const getCardsToReviewService = async (deckId: string) => {
   });
 };
 
+export const deleteReviewSessionService = async (sessionId: string) => {
+  return prisma.reviewSession.delete({
+    where: {
+      id: sessionId,
+    },
+  });
+};
