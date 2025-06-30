@@ -1,4 +1,6 @@
 import express from 'express';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './utils/swagger';
 import userRoutes from './routes/user.routes';
 import deckRoutes from './routes/deck.routes';
 import cardRoutes from './routes/card.routes';
@@ -27,6 +29,8 @@ app.use('/api', deckRoutes);
 app.use('/api', cardRoutes);
 app.use('/api', logRoutes);
 app.use('/api', reviewSessionRoutes);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 async function connectWithRetry(retries = MAX_RETRIES): Promise<void> {
   try {

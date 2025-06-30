@@ -14,7 +14,8 @@
     "postinstall": "prisma generate",
     "db:deploy": "npx prisma migrate deploy && npx prisma generate",
     "start:prod": "npm run db:deploy && node dist/index.js",
-    "test:flow": "jest src/__tests__/memoryleafFlow.test.ts --forceExit --detectOpenHandles"
+    "test:flow": "jest src/__tests__/memoryleafFlow.test.ts --forceExit --detectOpenHandles",
+    "generate:swagger": "ts-node src/scripts/generate-swagger.ts"
   },
   "keywords": [],
   "author": "",
@@ -28,7 +29,9 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
-    "prisma": "^6.6.0"
+    "prisma": "^6.6.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -37,8 +40,9 @@
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
     "@types/mongoose": "^5.11.96",
-    "@types/node": "^22.14.1",
+    "@types/node": "^22.15.34",
     "@types/supertest": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.8",
     "@typescript-eslint/eslint-plugin": "^8.31.0",
     "@typescript-eslint/parser": "^8.31.0",
     "eslint": "^9.25.1",
