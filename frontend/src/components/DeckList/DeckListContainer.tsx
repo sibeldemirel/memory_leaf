@@ -48,6 +48,30 @@ export function DeckListContainer() {
     }
   }
 
+  async function handleStartReview(deckId: string) {
+  try {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/review-sessions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
+      body: JSON.stringify({ deckId }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.message || 'Erreur inconnue');
+
+    alert('Session de révision lancée !');
+  } catch (error) {
+    console.error("Erreur lors du lancement de la session :", error);
+    alert("Impossible de démarrer la session de révision.");
+  }
+}
+
+
   if (loading) {
     return <p>Chargement des decks...</p>;
   }
@@ -58,6 +82,7 @@ export function DeckListContainer() {
         decks={decks}
         onDelete={handleDelete}
         onAddClick={() => setIsModalOpen(true)}
+        onStartReview={handleStartReview}
       />
       <AddDeckModal
         isOpen={isModalOpen}
