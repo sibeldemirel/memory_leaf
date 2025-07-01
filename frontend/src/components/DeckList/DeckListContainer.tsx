@@ -5,32 +5,36 @@ import { Deck } from "@/types/Deck";
 import { DeckList } from "./DeckList";
 import { AddDeckModal } from "./AddDeckModal";
 import { fetchDecks, createDeck, deleteDeck } from "@/lib/deckApi";
+import { useRouter, usePathname } from "next/navigation";
 
 export function DeckListContainer() {
+  const router = useRouter();
+  const pathname = usePathname();
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  useEffect(() => {
-    async function loadDecks() {
-      try {
-        const decksData = await fetchDecks();
-        setDecks(decksData);
-      } catch (error) {
-        console.error("Erreur dans loadDecks :", error);
-      } finally {
-        setLoading(false);
-      }
+  const loadDecks = async () => {
+    try {
+      const decksData = await fetchDecks();
+      setDecks(decksData);
+    } catch (error) {
+      console.error("Erreur dans loadDecks :", error);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  useEffect(() => {
     loadDecks();
-  }, []);
+  }, [pathname]);
 
   async function handleDelete(deckId: string) {
     if (!confirm("Es-tu sûr de vouloir supprimer ce deck ?")) return;
 
     try {
       await deleteDeck(deckId);
-      setDecks((prev) => prev.filter((deck) => deck.id !== deckId));
+      await loadDecks();
       alert("Deck supprimé avec succès !");
     } catch (error) {
       console.error("Erreur lors de la suppression :", error);
@@ -40,8 +44,8 @@ export function DeckListContainer() {
 
   async function handleAddDeck(name: string) {
     try {
-      const newDeck = await createDeck({ name });
-      setDecks((prev) => [...prev, newDeck]);
+      await createDeck({ name });
+      await loadDecks();
     } catch (error) {
       console.error("Erreur lors de la création du deck :", error);
       alert("Impossible d’ajouter le deck.");
@@ -49,28 +53,28 @@ export function DeckListContainer() {
   }
 
   async function handleStartReview(deckId: string) {
-  try {
-    const token = localStorage.getItem('token');
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/review-sessions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(token && { Authorization: `Bearer ${token}` }),
-      },
-      body: JSON.stringify({ deckId }),
-    });
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/review-sessions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { Authorization: `Bearer ${token}` }),
+        },
+        body: JSON.stringify({ deckId }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (!res.ok) throw new Error(data.message || 'Erreur inconnue');
+      if (!res.ok) throw new Error(data.message || 'Erreur inconnue');
 
-    alert('Session de révision lancée !');
-  } catch (error) {
-    console.error("Erreur lors du lancement de la session :", error);
-    alert("Impossible de démarrer la session de révision.");
+      await loadDecks();
+      router.push(`/review/${deckId}`);
+    } catch (error) {
+      console.error("Erreur lors du lancement de la session :", error);
+      alert("Impossible de démarrer la session de révision.");
+    }
   }
-}
-
 
   if (loading) {
     return <p>Chargement des decks...</p>;

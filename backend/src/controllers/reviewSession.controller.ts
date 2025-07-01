@@ -1,9 +1,10 @@
-import { Request, RequestHandler, Response } from 'express';
+import {RequestHandler } from 'express';
 import { createReviewSessionService, deleteReviewSessionService, getCardsToReviewService } from '../services/reviewSession.service';
 
-export const createReviewSession = async (req: Request, res: Response) => {
+export const createReviewSession: RequestHandler = async (req, res) => {
   try {
-    const { userId, deckId } = req.body;
+    const userId = req.user?.userId;
+    const { deckId } = req.body;
 
     if (!userId || !deckId) {
       res.status(400).json({ success: false, message: 'Missing userId or deckId' });
@@ -13,7 +14,11 @@ export const createReviewSession = async (req: Request, res: Response) => {
     const session = await createReviewSessionService(userId, deckId);
     res.status(201).json({ success: true, data: session, message: 'Review session started' });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error creating review session:', error });
+    res.status(500).json({
+      success: false,
+      message: 'Error creating review session',
+      error,
+    });
   }
 };
 

@@ -5,6 +5,7 @@ import {
   updateCard,
   deleteCard
 } from '../controllers/card.controller';
+import { authenticateToken } from '../middleware/auth.middleware';
 
 const router = Router();
 
@@ -46,7 +47,7 @@ const router = Router();
  *       201:
  *         description: Carte créée
  */
-router.post('/cards', createCard);
+router.post('/cards', authenticateToken, createCard);
 
 /**
  * @swagger
@@ -60,7 +61,7 @@ router.post('/cards', createCard);
  *       200:
  *         description: Liste des cartes
  */
-router.get('/cards', getAllCards);
+router.get('/cards', authenticateToken, getAllCards);
 
 /**
  * @swagger
@@ -99,7 +100,7 @@ router.get('/cards', getAllCards);
  *       404:
  *         description: Carte non trouvée
  */
-router.put('/cards/:id', updateCard);
+router.put('/cards/:id', authenticateToken, updateCard);
 
 /**
  * @swagger
@@ -122,6 +123,6 @@ router.put('/cards/:id', updateCard);
  *       404:
  *         description: Carte non trouvée
  */
-router.delete('/cards/:id', deleteCard);
+router.delete('/cards/:id', authenticateToken, deleteCard);
 
 export default router;

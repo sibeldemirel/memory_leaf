@@ -45,7 +45,6 @@ export const deleteCardService = async (id: string) => {
   const card = await prisma.card.findUnique({ where: { id } });
   if (!card) throw new Error('Card not found');
 
-  // Suppression = oldStatus = card.status, newStatus = null
   const counter = getDeckCounter(card.status, null);
 
   const deck = await prisma.deck.findUnique({ where: { id: card.deckId } });
@@ -60,8 +59,11 @@ export const deleteCardService = async (id: string) => {
     },
   });
 
-  return prisma.card.delete({ where: { id } });
+  await prisma.card.delete({ where: { id } });
+
+  return card;
 };
+
 
 interface UpdateCardData {
   question?: string;
