@@ -8,11 +8,7 @@ type DeckListProps = {
   onStartReview: (deckId: string) => void;
 };
 
-export function DeckList({ decks, onDelete, onAddClick }: DeckListProps) {
-  function onStartReview(id: string): void {
-    throw new Error("Function not implemented.");
-  }
-
+export function DeckList({ decks, onDelete, onAddClick, onStartReview }: DeckListProps) {
   return (
     <div className="px-4 py-2 w-full bg-gray-200">
       <div className="overflow-x-auto">
@@ -54,7 +50,6 @@ export function DeckList({ decks, onDelete, onAddClick }: DeckListProps) {
                       >
                         Réviser
                       </button>
-
                       <Link
                         href={`/decks/${deck.id}/edit`}
                         className="px-3 py-1 bg-green-500 text-white text-xs rounded hover:bg-green-600 transition whitespace-nowrap"

@@ -31,7 +31,7 @@ export const createDeck: RequestHandler = async (req, res) => {
       message: 'Deck created successfully',
     });
   } catch (error) {
-    res.status(500).json({ success: false, message: 'Error creating deck : ', error});
+    res.status(500).json({ success: false, message: 'Error creating deck : ', error });
   }
 };
 
@@ -98,8 +98,8 @@ export const deleteDeck: RequestHandler = async (req, res) => {
 
     const access = await checkDeckAccess(id, user);
     if (!access.authorized) {
-     res.status(access.status).json({ success: false, message: access.message });
-     return;
+      res.status(access.status).json({ success: false, message: access.message });
+      return;
     }
 
     await deleteDeckService(id);
