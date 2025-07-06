@@ -12,7 +12,6 @@ type Card = {
 export default function ReviewPage() {
     const { deckId } = useParams();
     const router = useRouter();
-
     const [cards, setCards] = useState<Card[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [showAnswer, setShowAnswer] = useState(false);
@@ -118,7 +117,6 @@ export default function ReviewPage() {
                         </button>
                     </div>
                 </>
-
             )}
         </div>
     );

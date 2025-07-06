@@ -69,17 +69,16 @@ export function DeckList({ decks, onDelete, onAddClick, onStartReview }: DeckLis
             )}
           </tbody>
         </table>
-
-        <div className="mt-4 flex justify-center gap-4">
+        <div className="mt-4 flex flex-col gap-4 items-center sm:flex-row sm:justify-center">
           <Link
             href="/"
-            className="px-4 py-2 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition"
+            className="w-full sm:w-auto px-4 py-2 bg-gray-500 text-white rounded-xl hover:bg-gray-600 transition text-center"
           >
             Retour à l'accueil
           </Link>
           <button
             onClick={onAddClick}
-            className="px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-500 text-white rounded-xl hover:bg-indigo-600 transition text-center"
           >
             Ajouter un paquet
           </button>
